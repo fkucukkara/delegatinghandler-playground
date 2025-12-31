@@ -1,4 +1,4 @@
-# DelegateHandlerPlayground
+# Delegatinghandler Playground
 
 This playground demonstrates how to use custom `DelegatingHandler` in ASP.NET Core Minimal APIs with [Refit](https://github.com/reactiveui/refit) (.NET 10, C# 14).
 
