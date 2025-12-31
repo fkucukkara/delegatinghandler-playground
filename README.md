@@ -1,25 +1,32 @@
-# Delegatinghandler Playground
+# DelegatingHandler Playground
 
-This playground demonstrates how to use custom `DelegatingHandler` in ASP.NET Core Minimal APIs with [Refit](https://github.com/reactiveui/refit) (.NET 10, C# 14).
+This playground demonstrates how to use custom `DelegatingHandler` in ASP.NET Core Minimal APIs (.NET 10, C# 14). It showcases building a pipeline of HTTP message handlers for cross-cutting concerns like logging, authentication, and header propagation.
 
-## Features
-- **Refit-generated clients**: Easily call REST APIs using strongly-typed interfaces.
-- **DelegateHandlers**: Add cross-cutting concerns (logging, authentication, etc.) to outgoing HTTP requests.
-- **Minimal API structure**: Modern, modular, and easy to extend.
+## Main Feature
+- **Custom DelegatingHandlers**: Create and chain multiple `DelegatingHandler` classes to intercept and modify outgoing HTTP requests and responses, enabling features like logging, API key injection, and more.
+
+## Side Features
+- **Refit**: Generate strongly-typed HTTP clients from REST API interfaces for clean, type-safe API calls.
+- **Header Propagation Middleware**: Automatically propagate specified headers (e.g., `X-TraceId`) from incoming requests to outgoing HTTP requests using ASP.NET Core's built-in middleware.
 
 ## Key Concepts
+### Custom DelegatingHandlers
+- Inherit from `DelegatingHandler` to create handlers for specific concerns (e.g., logging requests, adding authentication).
+- Chain handlers in the desired order using `.AddHttpMessageHandler<T>()` on the `HttpClient` builder. Note that built-in handlers like `AddHeaderPropagation()` should be added before custom handlers to ensure proper execution order.
+- Handlers execute in the order they are added, allowing for modular and reusable HTTP pipeline logic.
+
 ### Refit Client
 - Define an interface for your API (see `IWeatherApi`).
-- Register with `AddRefitClient` in DI.
-- Use in endpoints via dependency injection.
+- Register with `AddRefitClient` in DI for automatic client generation.
+- Use in endpoints via dependency injection for seamless API integration.
 
-### DelegateHandlers
-- Create classes inheriting from `DelegatingHandler`.
-- Chain multiple handlers for logging, authentication, etc.
-- Register with DI and attach to clients using `.AddHttpMessageHandler<T>()`.
+### Header Propagation Middleware
+- Configure which headers to propagate in `Program.cs` using `AddHeaderPropagation`.
+- Attach to `HttpClient` instances with `.AddHeaderPropagation()`.
+- Use `UseHeaderPropagation()` in the middleware pipeline to enable propagation from incoming requests.
 
 ## Example Endpoints
-- `/weather/{city}`: Calls the WeatherAPI (https://www.weatherapi.com/) to get current weather for the specified city using Refit and two handlers (logging, API key).
+- `/weather/{city}`: Retrieves current weather for a city using Refit, with handlers chained in this order: Header Propagation (adds propagated headers), Logging (logs request details including headers), and API Key (injects the API key as a query parameter).
 
 ## Prerequisites
 - Create an account at [WeatherAPI](https://www.weatherapi.com/) to obtain an API key.
@@ -33,6 +40,7 @@ This playground demonstrates how to use custom `DelegatingHandler` in ASP.NET Co
 
 ## References
 - [ASP.NET Core HTTP Requests](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-10.0)
+- [Header Propagation Middleware](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-10.0#header-propagation-middleware)
 - [Minimal APIs Tutorial](https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api?view=aspnetcore-10.0)
 - [Refit Documentation](https://github.com/reactiveui/refit)
 

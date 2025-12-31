@@ -11,11 +11,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<LoggingHandler>();
 builder.Services.AddTransient<ApiKeyHandler>();
 
+// Add header propagation
+builder.Services.AddHeaderPropagation(options =>
+{
+    options.Headers.Add("X-TraceId");
+});
+
 // Register Refit client with handlers
 builder.Services.AddRefitClient<IWeatherApi>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://api.weatherapi.com/v1/"))
+    .AddHeaderPropagation()
     .AddHttpMessageHandler<LoggingHandler>()
     .AddHttpMessageHandler<ApiKeyHandler>();
+    
 
 var app = builder.Build();
 
@@ -26,6 +34,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseHeaderPropagation();
 
 app.MapGet("/weather/{city}", async (string city, IWeatherApi weatherApi) =>
 {
@@ -71,6 +81,10 @@ public class LoggingHandler : DelegatingHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         Console.WriteLine($"[LoggingHandler] {request.Method} {request.RequestUri}");
+        foreach (var header in request.Headers)
+        {
+            Console.WriteLine($"[LoggingHandler] Header: {header.Key} = {string.Join(", ", header.Value)}");
+        }
 
         var response = await base.SendAsync(request, cancellationToken);
 
