@@ -1,19 +1,99 @@
-# .NET build outputs
+## .NET Core / ASP.NET Core
 bin/
 obj/
-# User-specific files
-*.user
+out/
+*.dll
+*.exe
+*.pdb
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio cache/options
+.vs/
+.vscode/
+*.rsuser
 *.suo
+*.user
 *.userosscache
 *.sln.docstates
-# VS Code
-.vscode/
-# Rider
+
+## Rider
 .idea/
-# Logs
+*.sln.iml
+
+## User-specific files
+*.userprefs
+
+## Mono auto generated files
+mono_crash.*
+
+## Build Results
+TestResults/
+[Dd]ebugPublic/
+[Rr]eleases/
+
+## ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+## Azure Functions
+local.settings.json
+
+## Secrets
+appsettings.*.user.json
+*.pfx
+*.p12
+
+## Logs
 *.log
-# HTTP files
-*.http
-# Others
-*.DS_Store
-/.vs
+logs/
+*.log.*
+
+## OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+## Temporary files
+*.tmp
+*.temp
+*~
+
+## Database
+*.db
+*.sqlite
+*.sqlite3
+
+## Static web assets
+wwwroot/dist/
+node_modules/
+staticwebassets/
+
+## Editor backup files
+*~
+*.swp
+*.swo
+
