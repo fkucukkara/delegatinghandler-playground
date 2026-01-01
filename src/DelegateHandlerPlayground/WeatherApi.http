@@ -1,0 +1,7 @@
+# Example HTTP file for testing endpoints
+@Host = https://localhost:7102
+
+GET {{Host}}/weather/wroclaw
+X-TraceId: 123
+
+###
